@@ -36,6 +36,7 @@ public class CONSTANT_Utf8 extends CONSTANTPoolElement
     
     public void setString(String str)
     {
+        setLength(str.length());
         bytes = new int[str.length()];
         for (int i = 0; i < str.length(); i++)
         {
