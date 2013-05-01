@@ -3,23 +3,26 @@ package jbedit.classFileStructure.constantPool;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PoolElementLoader 
 {
-    public static CONSTANTPoolElement[] loadElements(DataInputStream mainInput, int count) throws IOException // Возвращает пул констант
+    public static LinkedList<CONSTANTPoolElement> loadElements(DataInputStream mainInput, int count) throws IOException // Возвращает пул констант
     {
-        CONSTANTPoolElement pool[] = new CONSTANTPoolElement[count];
+        LinkedList<CONSTANTPoolElement> pool = new LinkedList<CONSTANTPoolElement>();
+        pool.add(new CONSTANT_FICTIVE()); // Для сдвига нумерации с 0 до 1
+        
         for (int i = 1; i < count; i++)
         {
-            if ((i != 1) && ((pool[i-1] instanceof CONSTANT_Double) || (pool[i-1] instanceof CONSTANT_Long)))
+            if ((i != 1) && ((pool.get(i-1) instanceof CONSTANT_Double) || (pool.get(i-1) instanceof CONSTANT_Long)))
             {
-                    pool[i] = new CONSTANT_FICTIVE(); // эти типы занимают 2 ячейки
+                    pool.add(new CONSTANT_FICTIVE()); // эти типы занимают 2 ячейки
             }
             else
             {
-                pool[i] = loadElement(mainInput, i);
+                pool.add(loadElement(mainInput, i));
             }
         }
         return pool;

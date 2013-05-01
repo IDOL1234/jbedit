@@ -4,6 +4,7 @@ package jbedit.classFileStructure;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.constantPool.CONSTANTPoolElement;
 import jbedit.classFileStructure.attributes.AbstractAttribute;
 import jbedit.classFileStructure.attributes.AttributeLoader;
@@ -16,7 +17,7 @@ public class Field
     private int name_index; //(short)
     private int descriptor_index;//(short)
     private int attributes_count;//(short)
-    private AbstractAttribute attributes[];
+    private LinkedList<AbstractAttribute> attributes;
 
     public int getAccess_flags() 
     {
@@ -58,22 +59,22 @@ public class Field
         this.attributes_count = attributes_count;
     }
 
-    public AbstractAttribute[] getAttributes() 
+    public LinkedList<AbstractAttribute> getAttributes() 
     {
         return attributes;
     }
     
     public AbstractAttribute getAttribute(int num) 
     {
-        return attributes[num];
+        return attributes.get(num);
     }
 
-    public void setAttributes(AbstractAttribute[] attributes) 
+    public void setAttributes(LinkedList<AbstractAttribute> attributes) 
     {
         this.attributes = attributes;
     }
     
-    public void selfLoad(DataInputStream mainInput, CONSTANTPoolElement[] pool) throws IOException, FrameException
+    public void selfLoad(DataInputStream mainInput, LinkedList<CONSTANTPoolElement> pool) throws IOException, FrameException
     {
         access_flags = mainInput.readUnsignedShort();
         name_index = mainInput.readUnsignedShort();

@@ -3,6 +3,7 @@ package jbedit.classFileStructure.attributes;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.constantPool.CONSTANTPoolElement;
 import jbedit.classFileStructure.constantPool.CONSTANT_Utf8;
 import jbedit.classFileStructure.frames.FrameException;
@@ -10,23 +11,23 @@ import jbedit.classFileStructure.frames.FrameException;
 
 public class AttributeLoader
 { 
-    public static AbstractAttribute[] loadElements(DataInputStream mainInput,CONSTANTPoolElement[] pool, 
-            int num) throws IOException, FrameException
+    public static LinkedList<AbstractAttribute> loadElements(DataInputStream mainInput, 
+            LinkedList<CONSTANTPoolElement> pool, int num) throws IOException, FrameException
     {
-        AbstractAttribute result[] = new AbstractAttribute[num];
+        LinkedList<AbstractAttribute> result = new LinkedList<AbstractAttribute>();
         for (int i = 0; i < num; i++)
         {
-            result[i] = loadElement(mainInput, pool);
+            result.add(loadElement(mainInput, pool));
         }
         return result;   
     }
     
-    public static AbstractAttribute loadElement(DataInputStream mainInput, CONSTANTPoolElement[] pool) 
+    public static AbstractAttribute loadElement(DataInputStream mainInput, LinkedList<CONSTANTPoolElement> pool) 
             throws IOException, FrameException
     {
         int attr_name_index = mainInput.readUnsignedShort(); // (short)
         int attr_len = mainInput.readInt();
-        CONSTANTPoolElement tempName = pool[attr_name_index];
+        CONSTANTPoolElement tempName = pool.get(attr_name_index);
         if (!(tempName instanceof CONSTANT_Utf8))
         {
             throw new IllegalStateException("Некорректный тип константы:" + tempName.toString());

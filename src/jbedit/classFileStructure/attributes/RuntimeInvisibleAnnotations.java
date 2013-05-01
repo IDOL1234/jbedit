@@ -4,6 +4,7 @@ package jbedit.classFileStructure.attributes;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.attributes.annotations.Annotation;
 import jbedit.classFileStructure.constantPool.CONSTANTPoolElement;
 import jbedit.classFileStructure.frames.FrameException;
@@ -11,7 +12,7 @@ import jbedit.classFileStructure.frames.FrameException;
 public class RuntimeInvisibleAnnotations extends AbstractAttribute
 {
     private int num_annotations; //(short)
-    private Annotation annotations[];
+    private LinkedList<Annotation> annotations;
 
     public int getNum_annotations()
     {
@@ -23,12 +24,12 @@ public class RuntimeInvisibleAnnotations extends AbstractAttribute
         this.num_annotations = num_annotations;
     }
 
-    public Annotation[] getAnnotations()
+    public LinkedList<Annotation> getAnnotations()
     {
         return annotations;
     }
 
-    public void setAnnotations(Annotation[] annotations)
+    public void setAnnotations(LinkedList<Annotation> annotations)
     {
         this.annotations = annotations;
     }
@@ -40,20 +41,20 @@ public class RuntimeInvisibleAnnotations extends AbstractAttribute
         result += 2;
         for (int i = 0; i < num_annotations; i++)
         {
-            result += annotations[i].getRealLength();
+            result += annotations.get(i).getRealLength();
         }
         return result;
     }
 
     @Override
-    public void selfLoad(DataInputStream mainInput, CONSTANTPoolElement pool[]) throws IOException, FrameException
+    public void selfLoad(DataInputStream mainInput, LinkedList<CONSTANTPoolElement> pool) throws IOException, FrameException
     {
         num_annotations = mainInput.readUnsignedShort();
-        annotations = new Annotation[num_annotations];
+        annotations = new LinkedList<Annotation>();
         for (int i=0; i < num_annotations; i++)
         {
-            annotations[i] = new Annotation();
-            annotations[i].selfLoad(mainInput);
+            annotations.add(new Annotation());
+            annotations.get(i).selfLoad(mainInput);
         }
     }
     
@@ -65,7 +66,7 @@ public class RuntimeInvisibleAnnotations extends AbstractAttribute
         mainOutput.writeShort(num_annotations);
         for (int i = 0; i < num_annotations; i++)
         {
-            annotations[i].selfSave(mainOutput);
+            annotations.get(i).selfSave(mainOutput);
         }
     }
 }

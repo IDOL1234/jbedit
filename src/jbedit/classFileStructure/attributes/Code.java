@@ -4,6 +4,7 @@ package jbedit.classFileStructure.attributes;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.constantPool.CONSTANTPoolElement;
 import jbedit.classFileStructure.frames.FrameException;
 
@@ -12,11 +13,11 @@ public class Code extends AbstractAttribute
     private int max_stack; //(short)
     private int max_locals;//(short)
     private int code_length;
-    private int code[];//(byte)
+    private LinkedList<Integer> code;//(byte)
     private int exceptions_table_length;//(short)
-    private exception_table_element exception_table[];
+    private LinkedList<exception_table_element> exception_table;
     private int attributes_count;//(short)
-    private AbstractAttribute attributes[];
+    private LinkedList<AbstractAttribute> attributes;
 
     public int getMax_stack() 
     {
@@ -48,12 +49,12 @@ public class Code extends AbstractAttribute
         this.code_length = code_length;
     }
 
-    public int[] getCode() 
+    public LinkedList<Integer> getCode() 
     {
         return code;
     }
 
-    public void setCode(int[] code) 
+    public void setCode(LinkedList<Integer> code) 
     {
         this.code = code;
     }
@@ -68,12 +69,12 @@ public class Code extends AbstractAttribute
         this.exceptions_table_length = exceptions_table_length;
     }
 
-    public exception_table_element[] getException_table() 
+    public LinkedList<exception_table_element> getException_table() 
     {
         return exception_table;
     }
 
-    public void setException_table(exception_table_element[] exception_table) 
+    public void setException_table(LinkedList<exception_table_element> exception_table) 
     {
         this.exception_table = exception_table;
     }
@@ -88,12 +89,12 @@ public class Code extends AbstractAttribute
         this.attributes_count = attributes_count;
     }
 
-    public AbstractAttribute[] getAttributes() 
+    public LinkedList<AbstractAttribute> getAttributes() 
     {
         return attributes;
     }
 
-    public void setAttributes(AbstractAttribute[] attributes) 
+    public void setAttributes(LinkedList<AbstractAttribute> attributes) 
     {
         this.attributes = attributes;
     }
@@ -109,37 +110,37 @@ public class Code extends AbstractAttribute
         result += 2; //exceptions_table_length
         for (int i = 0; i < exceptions_table_length; i++)
         {
-            result += exception_table[i].getRealLength();
+            result += exception_table.get(i).getRealLength();
         }
         result += 2; //attributes_count
         for (int i = 0; i < attributes_count; i++) //attributes[]
         {
-            result += attributes[i].getRealLength();
+            result += attributes.get(i).getRealLength();
         }
         
         return result;
     }
     
     @Override
-    public void selfLoad(DataInputStream mainInput, CONSTANTPoolElement pool[]) throws IOException, FrameException
+    public void selfLoad(DataInputStream mainInput, LinkedList<CONSTANTPoolElement> pool) throws IOException, FrameException
     {
         max_stack = mainInput.readUnsignedShort();
         max_locals = mainInput.readUnsignedShort();
         code_length = mainInput.readInt();
-        code = new int[code_length];
+        code = new LinkedList<Integer>();
         
         //mainInput.read(code);
         for (int i = 0; i < code_length; i++)
         {
-            code[i] = mainInput.readUnsignedByte();
+            code.add(mainInput.readUnsignedByte());
         }
         
         exceptions_table_length = mainInput.readUnsignedShort();
-        exception_table = new exception_table_element[exceptions_table_length];
+        exception_table = new LinkedList<exception_table_element>();
         for (int i = 0; i < exceptions_table_length; i++)
         {
-            exception_table[i] = new exception_table_element();
-            exception_table[i].selfLoad(mainInput);
+            exception_table.add(new exception_table_element());
+            exception_table.get(i).selfLoad(mainInput);
         }
         attributes_count = mainInput.readUnsignedShort();
         attributes = AttributeLoader.loadElements(mainInput, pool, attributes_count);
@@ -156,13 +157,13 @@ public class Code extends AbstractAttribute
         
         for (int i = 0; i < code_length; i++)
         {
-            mainOutput.writeByte(code[i]);
+            mainOutput.writeByte(code.get(i));
         }
         
         mainOutput.writeShort(exceptions_table_length);
         for (int i = 0; i < exceptions_table_length; i++)
         {
-            exception_table[i].selfSave(mainOutput);
+            exception_table.get(i).selfSave(mainOutput);
         }
         mainOutput.writeShort(attributes_count);
         AttributeSaver.saveElements(attributes, mainOutput);

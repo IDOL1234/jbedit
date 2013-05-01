@@ -4,13 +4,14 @@ package jbedit.classFileStructure.attributes;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.constantPool.CONSTANTPoolElement;
 import jbedit.classFileStructure.frames.FrameException;
 
 public class BootstrapMethods extends AbstractAttribute
 {
     private int num_bootstrap_methods; //(short)
-    private BootstrapMethodElement bootstrap_methods[];
+    private LinkedList<BootstrapMethodElement> bootstrap_methods;
 
     public int getNum_bootstrap_methods()
     {
@@ -22,12 +23,12 @@ public class BootstrapMethods extends AbstractAttribute
         this.num_bootstrap_methods = num_bootstrap_methods;
     }
 
-    public BootstrapMethodElement[] getBootstrap_methods()
+    public LinkedList<BootstrapMethodElement> getBootstrap_methods()
     {
         return bootstrap_methods;
     }
 
-    public void setBootstrap_methods(BootstrapMethodElement[] bootstrap_methods)
+    public void setBootstrap_methods(LinkedList<BootstrapMethodElement> bootstrap_methods)
     {
         this.bootstrap_methods = bootstrap_methods;
     }
@@ -39,21 +40,21 @@ public class BootstrapMethods extends AbstractAttribute
         result += 2; // num_bootstrap_methods
         for (int i = 0; i < num_bootstrap_methods; i++)
         {
-            result += bootstrap_methods[i].getRealLength();
+            result += bootstrap_methods.get(i).getRealLength();
         }
         
         return result;
     }
 
     @Override
-    public void selfLoad(DataInputStream mainInput, CONSTANTPoolElement pool[]) throws IOException, FrameException
+    public void selfLoad(DataInputStream mainInput, LinkedList<CONSTANTPoolElement> pool) throws IOException, FrameException
     {
         num_bootstrap_methods = mainInput.readUnsignedShort();
-        bootstrap_methods = new BootstrapMethodElement[num_bootstrap_methods];
+        bootstrap_methods = new LinkedList<BootstrapMethodElement>();
         for (int i=0; i < num_bootstrap_methods; i++)
         {
-            bootstrap_methods[i] = new BootstrapMethodElement();
-            bootstrap_methods[i].selfLoad(mainInput);
+            bootstrap_methods.set(i, new BootstrapMethodElement());
+            bootstrap_methods.get(i).selfLoad(mainInput);
         }
     }
     
@@ -65,7 +66,7 @@ public class BootstrapMethods extends AbstractAttribute
         mainOutput.writeShort(num_bootstrap_methods);
         for (int i = 0; i < num_bootstrap_methods; i++)
         {
-            bootstrap_methods[i].selfSave(mainOutput);
+            bootstrap_methods.get(i).selfSave(mainOutput);
         }
     }
     

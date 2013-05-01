@@ -4,6 +4,7 @@ package jbedit.classFileStructure.attributes;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.attributes.annotations.ElementLoader;
 import jbedit.classFileStructure.attributes.annotations.ElementSaver;
 import jbedit.classFileStructure.attributes.annotations.element_value;
@@ -31,7 +32,7 @@ public class AnnotationDefault extends AbstractAttribute
     }
     
     @Override
-    public void selfLoad(DataInputStream mainInput, CONSTANTPoolElement pool[]) throws IOException, FrameException
+    public void selfLoad(DataInputStream mainInput, LinkedList<CONSTANTPoolElement> pool) throws IOException, FrameException
     {
         default_value = ElementLoader.loadElement(mainInput);
     }

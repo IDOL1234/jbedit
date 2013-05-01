@@ -3,15 +3,16 @@ package jbedit.classFileStructure.attributes.annotations;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class ElementLoader
 {
-    public static element_value[] loadElements(DataInputStream mainInput, int num) throws IOException
+    public static LinkedList<element_value> loadElements(DataInputStream mainInput, int num) throws IOException
     {
-        element_value result[] = new element_value[num];
+        LinkedList<element_value> result = new LinkedList<element_value>();
         for (int i = 0; i < num; i++)
         {
-            result[i] = loadElement(mainInput);
+            result.add(loadElement(mainInput));
         }
         return result;
     }

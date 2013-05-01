@@ -4,6 +4,7 @@ package jbedit.classFileStructure.attributes;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.constantPool.CONSTANTPoolElement;
 
 public class ConstantValue extends AbstractAttribute
@@ -29,7 +30,7 @@ public class ConstantValue extends AbstractAttribute
     }
 
     @Override
-    public void selfLoad(DataInputStream mainInput, CONSTANTPoolElement pool[]) throws IOException
+    public void selfLoad(DataInputStream mainInput, LinkedList<CONSTANTPoolElement> pool) throws IOException
     {
         constantvalue_index = mainInput.readUnsignedShort();
     }

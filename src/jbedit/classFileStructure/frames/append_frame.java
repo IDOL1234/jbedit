@@ -4,6 +4,7 @@ package jbedit.classFileStructure.frames;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.frames.verification_types.AbstractTypeInfo;
 import jbedit.classFileStructure.frames.verification_types.TypeInfoLoader;
 import jbedit.classFileStructure.frames.verification_types.TypeInfoSaver;
@@ -12,7 +13,7 @@ public class append_frame extends AbstractStackMapFrame
 {
     private int frame_type; // byte
     private int offset_delta; //(short)
-    private AbstractTypeInfo locals[];
+    private LinkedList<AbstractTypeInfo> locals;
 
     @Override
     public int getFrame_type()
@@ -38,14 +39,14 @@ public class append_frame extends AbstractStackMapFrame
         this.offset_delta = offset_delta;
     }
     
-    public AbstractTypeInfo[] getLocals()
+    public LinkedList<AbstractTypeInfo> getLocals()
     {
         return locals;
     }
 
-    public void setLocals(AbstractTypeInfo[] locals) throws FrameException
+    public void setLocals(LinkedList<AbstractTypeInfo> locals) throws FrameException
     {
-        if (locals.length != frame_type - 251)
+        if (locals.size() != frame_type - 251)
             throw new FrameException("Неверная размерность");
         this.locals = locals;
     }
@@ -57,7 +58,7 @@ public class append_frame extends AbstractStackMapFrame
         result += 2;
         for (int i = 0; i < frame_type - 251; i++)
         {
-            result += locals[i].getRealLength();
+            result += locals.get(i).getRealLength();
         }
         return result;
     }

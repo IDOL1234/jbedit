@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.attributes.AbstractAttribute;
 import jbedit.classFileStructure.attributes.AttributeSaver;
 import jbedit.classFileStructure.constantPool.PoolElementSaver;
@@ -44,7 +45,7 @@ public class ClassFileSaver
             MethodSaver.saveElements(classFile.getMethods(), mainOutput);
             
             mainOutput.writeShort(classFile.getAttribute_count());
-            AbstractAttribute[] attributes = classFile.getAtributes();
+            LinkedList<AbstractAttribute> attributes = classFile.getAtributes();
             AttributeSaver.saveElements(attributes, mainOutput);
             
             

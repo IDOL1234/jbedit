@@ -46,6 +46,7 @@ public class element_enum_const_value extends element_value
         const_name_index = mainInput.readUnsignedShort();
     }
     
+    @Override
     public void selfSave(DataOutputStream mainOutput) throws IOException
     {
         mainOutput.writeShort(type_name_index);

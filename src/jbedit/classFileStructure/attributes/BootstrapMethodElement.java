@@ -4,12 +4,13 @@ package jbedit.classFileStructure.attributes;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class BootstrapMethodElement
 {
     private int bootstrap_method_ref; //(short)
     private int num_bootstrap_arguments; //(short)
-    private int bootstrap_arguments[]; //(short)
+    private LinkedList<Integer> bootstrap_arguments; //(short)
 
     public int getBootstrap_method_ref()
     {
@@ -31,12 +32,12 @@ public class BootstrapMethodElement
         this.num_bootstrap_arguments = num_bootstrap_arguments;
     }
 
-    public int[] getBootstrap_arguments()
+    public LinkedList<Integer> getBootstrap_arguments()
     {
         return bootstrap_arguments;
     }
 
-    public void setBootstrap_arguments(int bootstrap_arguments[])
+    public void setBootstrap_arguments(LinkedList<Integer> bootstrap_arguments)
     {
         this.bootstrap_arguments = bootstrap_arguments;
     }
@@ -52,10 +53,10 @@ public class BootstrapMethodElement
     {
         bootstrap_method_ref = mainInput.readUnsignedShort();
         num_bootstrap_arguments = mainInput.readUnsignedShort();
-        bootstrap_arguments = new int[num_bootstrap_arguments];
+        bootstrap_arguments = new LinkedList<Integer>();
         for (int i = 0; i < num_bootstrap_arguments; i++)
         {
-            bootstrap_arguments[i] = mainInput.readUnsignedShort();
+            bootstrap_arguments.add(mainInput.readUnsignedShort());
         }
     }
     
@@ -66,7 +67,7 @@ public class BootstrapMethodElement
         
         for (int i = 0; i < num_bootstrap_arguments; i++)
         {
-            mainOutput.writeShort(bootstrap_arguments[i]);
+            mainOutput.writeShort(bootstrap_arguments.get(i));
         }
     }
 }

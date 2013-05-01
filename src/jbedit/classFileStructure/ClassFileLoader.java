@@ -2,6 +2,7 @@
 package jbedit.classFileStructure;
 
 import java.io.*;
+import java.util.LinkedList;
 import jbedit.classFileStructure.attributes.AbstractAttribute;
 import jbedit.classFileStructure.attributes.AttributeLoader;
 import jbedit.classFileStructure.constantPool.CONSTANTPoolElement;
@@ -24,7 +25,7 @@ public class ClassFileLoader
             classFile.setMajor(mainInput.readUnsignedShort());
             
             classFile.setConstant_pool_count(mainInput.readUnsignedShort()); // пул констант
-            CONSTANTPoolElement constantPool[] = PoolElementLoader.loadElements(
+            LinkedList<CONSTANTPoolElement> constantPool = PoolElementLoader.loadElements(
                     mainInput, classFile.getConstant_pool_count());
             classFile.setConstantPool(constantPool);
             
@@ -34,23 +35,24 @@ public class ClassFileLoader
             classFile.setSuper_class(mainInput.readUnsignedShort());
             
             classFile.setInterfaces_count(mainInput.readUnsignedShort()); // интерфейсы
-            int interfaces[] = new int[classFile.getInterfaces_count()];
+            LinkedList<Integer> interfaces = new LinkedList<Integer>();
+            
             for (int i=0; i < classFile.getInterfaces_count(); i++)
             {
-                interfaces[i] = mainInput.readUnsignedShort();
+                interfaces.add(mainInput.readUnsignedShort());
             }
             classFile.setInterfaces(interfaces);
             
             classFile.setFileds_count(mainInput.readUnsignedShort()); // поля
-            Field[] fields = FieldLoader.loadElements(mainInput, constantPool, classFile.getFileds_count());
+            LinkedList<Field> fields = FieldLoader.loadElements(mainInput, constantPool, classFile.getFileds_count());
             classFile.setField_info(fields);
             
             classFile.setMethods_count(mainInput.readUnsignedShort()); // методы
-            Method methods[] = MethodLoader.loadElements(mainInput, constantPool, classFile.getMethods_count());
+            LinkedList<Method> methods = MethodLoader.loadElements(mainInput, constantPool, classFile.getMethods_count());
             classFile.setMethods(methods);
             
             classFile.setAttribute_count(mainInput.readShort()); // атрибуты
-            AbstractAttribute attributes[] = AttributeLoader.loadElements(mainInput, constantPool, classFile.getAttribute_count());
+            LinkedList<AbstractAttribute> attributes = AttributeLoader.loadElements(mainInput, constantPool, classFile.getAttribute_count());
             classFile.setAtributes(attributes);
             
             

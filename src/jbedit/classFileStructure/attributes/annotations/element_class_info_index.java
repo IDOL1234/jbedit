@@ -33,6 +33,7 @@ public class element_class_info_index extends element_value
         class_info_index = mainInput.readUnsignedShort();
     }
     
+    @Override
     public void selfSave(DataOutputStream mainOutput) throws IOException
     {
         mainOutput.writeShort(class_info_index);

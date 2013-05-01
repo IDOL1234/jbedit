@@ -4,12 +4,13 @@ package jbedit.classFileStructure.attributes.annotations;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class Annotation
 {
     private int type_index; //(short)
     private int num_element_value_pairs; //(short)
-    private element_value_pair element_value_pairs[];
+    private LinkedList<element_value_pair> element_value_pairs;
 
     public int getType_index()
     {
@@ -31,12 +32,12 @@ public class Annotation
         this.num_element_value_pairs = num_element_value_pairs;
     }
 
-    public element_value_pair[] getElement_value_pairs()
+    public LinkedList<element_value_pair> getElement_value_pairs()
     {
         return element_value_pairs;
     }
 
-    public void setElement_value_pairs(element_value_pair[] element_value_pairs)
+    public void setElement_value_pairs(LinkedList<element_value_pair> element_value_pairs)
     {
         this.element_value_pairs = element_value_pairs;
     }
@@ -47,7 +48,7 @@ public class Annotation
         int result = 2 + 2;;
         for (int i = 0; i < num_element_value_pairs; i++)
         {
-            result += element_value_pairs[i].getRealLength();
+            result += element_value_pairs.get(i).getRealLength();
         }
         return result;
     }
@@ -57,12 +58,12 @@ public class Annotation
         type_index = mainInput.readUnsignedShort();
         num_element_value_pairs = mainInput.readUnsignedShort();
         
-        element_value_pairs = new element_value_pair[num_element_value_pairs];
+        element_value_pairs = new LinkedList<element_value_pair>();
         
         for (int i = 0; i < num_element_value_pairs; i++)
         {
-            element_value_pairs[i] = new element_value_pair();
-            element_value_pairs[i].selfLoad(mainInput);
+            element_value_pairs.add(new element_value_pair());
+            element_value_pairs.get(i).selfLoad(mainInput);
         }
     }
     
@@ -73,7 +74,7 @@ public class Annotation
         
         for (int i = 0; i < num_element_value_pairs; i++)
         {
-            element_value_pairs[i].selfSave(mainOutput);
+            element_value_pairs.get(i).selfSave(mainOutput);
         }
     }    
 }

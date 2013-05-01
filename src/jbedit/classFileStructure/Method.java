@@ -4,6 +4,7 @@ package jbedit.classFileStructure;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.attributes.AbstractAttribute;
 import jbedit.classFileStructure.attributes.AttributeLoader;
 import jbedit.classFileStructure.attributes.AttributeSaver;
@@ -17,7 +18,7 @@ public class Method
     private short name_index;
     private short descriptor_index;
     private short attributes_count;
-    private AbstractAttribute attributes[];
+    private LinkedList<AbstractAttribute> attributes;
 
     public short getAccess_flags()
     {
@@ -59,17 +60,17 @@ public class Method
         this.attributes_count = attributes_count;
     }
 
-    public AbstractAttribute[] getAttributes()
+    public LinkedList<AbstractAttribute> getAttributes()
     {
         return attributes;
     }
 
-    public void setAttributes(AbstractAttribute[] attributes)
+    public void setAttributes(LinkedList<AbstractAttribute> attributes)
     {
         this.attributes = attributes;
     }
     
-    public void selfLoad(DataInputStream mainInput, CONSTANTPoolElement pool[])
+    public void selfLoad(DataInputStream mainInput, LinkedList<CONSTANTPoolElement> pool)
             throws IOException, FrameException
     {
         access_flags = mainInput.readShort();
@@ -77,7 +78,7 @@ public class Method
         descriptor_index = mainInput.readShort();
         attributes_count = mainInput.readShort();
         if (System.getProperty("debug") != null && System.getProperty("debug").equalsIgnoreCase("true"))
-            System.out.println("Loading method      " + ((CONSTANT_Utf8)(pool[name_index])).getString());
+            System.out.println("Loading method      " + ((CONSTANT_Utf8)(pool.get(name_index))).getString());
         
         attributes = AttributeLoader.loadElements(mainInput, pool, attributes_count);
     }

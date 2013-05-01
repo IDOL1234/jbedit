@@ -1,18 +1,17 @@
 
 package jbedit.classFileStructure.frames.verification_types;
 
-import java.io.DataInputStream;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class TypeInfoSaver
 {
-    public static void saveElements(AbstractTypeInfo[] elements, DataOutputStream mainOutput) throws IOException
+    public static void saveElements(LinkedList<AbstractTypeInfo> elements, DataOutputStream mainOutput) throws IOException
     {
-        for (int i = 0; i < elements.length; i++)
+        for (int i = 0; i < elements.size(); i++)
         {
-            elements[i].selfSave(mainOutput);
+            elements.get(i).selfSave(mainOutput);
         }
     }
 }

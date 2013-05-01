@@ -1,6 +1,7 @@
 
 package jbedit.classFileStructure;
 
+import java.util.LinkedList;
 import jbedit.classFileStructure.attributes.AbstractAttribute;
 import jbedit.classFileStructure.constantPool.CONSTANTPoolElement;
 
@@ -11,18 +12,18 @@ public class ClassFile
     private int major; //(short)
     private int minor; //(short)
     private int constant_pool_count; //(short)
-    private CONSTANTPoolElement constantPool[];
+    private LinkedList<CONSTANTPoolElement> constantPool;
     private int access_flags; //(short)
     private int this_class; //(short)
     private int super_class; //(short)
     private int interfaces_count; //(short)
-    private int interfaces[]; //(short)
+    private LinkedList<Integer> interfaces; //(short)
     private int fileds_count; //(short)
-    private Field field_info[];
+    private LinkedList<Field> field_info;
     private int methods_count; //(short)
-    private Method methods[];
+    private LinkedList<Method> methods;
     private int attribute_count; //(short)
-    private AbstractAttribute[] atributes;
+    private LinkedList<AbstractAttribute> atributes;
     
 
 
@@ -80,19 +81,19 @@ public class ClassFile
         this.access_flags = access_flags;
     }
 
-    public CONSTANTPoolElement[] getConstantPool() 
+    public LinkedList<CONSTANTPoolElement> getConstantPool() 
     {
         return constantPool;
     }
 
-    public void setConstantPool(CONSTANTPoolElement[] constantPool) 
+    public void setConstantPool(LinkedList<CONSTANTPoolElement> constantPool) 
     {
         this.constantPool = constantPool;
     }
     
     public CONSTANTPoolElement getConstantPoolElement(int num)
     {
-        return constantPool[num];
+        return constantPool.get(num);
     }
 
     public int getThis_class() 
@@ -125,17 +126,17 @@ public class ClassFile
         this.interfaces_count = interfaces_count;
     }
 
-    public int[] getInterfaces() 
+    public LinkedList<Integer> getInterfaces() 
     {
         return interfaces;
     }
     
     public int getInterface(int num) 
     {
-        return interfaces[num];
+        return interfaces.get(num);
     }
 
-    public void setInterfaces(int[] interfaces) 
+    public void setInterfaces(LinkedList<Integer> interfaces) 
     {
         this.interfaces = interfaces;
     }
@@ -150,12 +151,12 @@ public class ClassFile
         this.fileds_count = fileds_count;
     }
 
-    public Field[] getField_info()
+    public LinkedList<Field> getField_info()
     {
         return field_info;
     }
 
-    public void setField_info(Field[] field_info)
+    public void setField_info(LinkedList<Field> field_info)
     {
         this.field_info = field_info;
     }
@@ -170,12 +171,12 @@ public class ClassFile
         this.methods_count = methods_count;
     }
 
-    public Method[] getMethods()
+    public LinkedList<Method> getMethods()
     {
         return methods;
     }
 
-    public void setMethods(Method[] methods)
+    public void setMethods(LinkedList<Method> methods)
     {
         this.methods = methods;
     }
@@ -190,12 +191,12 @@ public class ClassFile
         this.attribute_count = attribute_count;
     }
 
-    public AbstractAttribute[] getAtributes()
+    public LinkedList<AbstractAttribute> getAtributes()
     {
         return atributes;
     }
 
-    public void setAtributes(AbstractAttribute[] atributes)
+    public void setAtributes(LinkedList<AbstractAttribute> atributes)
     {
         this.atributes = atributes;
     }

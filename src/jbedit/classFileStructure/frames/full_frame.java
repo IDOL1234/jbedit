@@ -4,6 +4,7 @@ package jbedit.classFileStructure.frames;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.frames.verification_types.AbstractTypeInfo;
 import jbedit.classFileStructure.frames.verification_types.TypeInfoLoader;
 import jbedit.classFileStructure.frames.verification_types.TypeInfoSaver;
@@ -13,9 +14,9 @@ public class full_frame extends AbstractStackMapFrame
     private int frame_type;
     private int offset_delta; //(short)
     private int number_of_locals; //(short)
-    private AbstractTypeInfo locals[];
+    private LinkedList<AbstractTypeInfo> locals;
     private int number_of_stack_item; //(short)
-    private AbstractTypeInfo stack[];
+    private LinkedList<AbstractTypeInfo> stack;
 
     @Override
     public int getFrame_type()
@@ -51,12 +52,12 @@ public class full_frame extends AbstractStackMapFrame
         this.number_of_locals = number_of_locals;
     }
 
-    public AbstractTypeInfo[] getLocals()
+    public LinkedList<AbstractTypeInfo> getLocals()
     {
         return locals;
     }
 
-    public void setLocals(AbstractTypeInfo[] locals)
+    public void setLocals(LinkedList<AbstractTypeInfo> locals)
     {
         this.locals = locals;
     }
@@ -71,12 +72,12 @@ public class full_frame extends AbstractStackMapFrame
         this.number_of_stack_item = number_of_stack_item;
     }
 
-    public AbstractTypeInfo[] getStack()
+    public LinkedList<AbstractTypeInfo> getStack()
     {
         return stack;
     }
 
-    public void setStack(AbstractTypeInfo[] stack)
+    public void setStack(LinkedList<AbstractTypeInfo> stack)
     {
         this.stack = stack;
     }
@@ -89,12 +90,12 @@ public class full_frame extends AbstractStackMapFrame
         result += 2;
         for (int i = 0; i < number_of_locals; i++)
         {
-            result += locals[i].getRealLength();
+            result += locals.get(i).getRealLength();
         }
         result += 2;
         for (int i = 0; i < number_of_stack_item; i++)
         {
-            result += stack[i].getRealLength();
+            result += stack.get(i).getRealLength();
         }
         return result;
     }

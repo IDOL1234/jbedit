@@ -4,6 +4,7 @@ package jbedit.classFileStructure.frames;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.frames.verification_types.AbstractTypeInfo;
 import jbedit.classFileStructure.frames.verification_types.TypeInfoLoader;
 import jbedit.classFileStructure.frames.verification_types.TypeInfoSaver;
@@ -12,7 +13,7 @@ public class same_locals_1_stack_item_frame_extended extends AbstractStackMapFra
 {
     private int frame_type;
     private int offset_delta; //(short)
-    private AbstractTypeInfo stack[];
+    private LinkedList<AbstractTypeInfo> stack;
     
     @Override
     public int getFrame_type()
@@ -28,14 +29,14 @@ public class same_locals_1_stack_item_frame_extended extends AbstractStackMapFra
         this.frame_type = frame_type;
     }
     
-    public AbstractTypeInfo[] getStack()
+    public LinkedList<AbstractTypeInfo> getStack()
     {
         return stack;
     }
 
-    public void setStack(AbstractTypeInfo[] stack) throws FrameException
+    public void setStack(LinkedList<AbstractTypeInfo> stack) throws FrameException
     {
-        if (stack.length != 1)
+        if (stack.size() != 1)
             throw new FrameException("Неверная размерность.");
         this.stack = stack;
     }
@@ -55,9 +56,9 @@ public class same_locals_1_stack_item_frame_extended extends AbstractStackMapFra
     {
         int result = 1;
         result += 2;
-        for (int i = 0; i < stack.length; i++)
+        for (int i = 0; i < stack.size(); i++)
         {
-            result += stack[i].getRealLength();
+            result += stack.get(i).getRealLength();
         }
         return result;
     }

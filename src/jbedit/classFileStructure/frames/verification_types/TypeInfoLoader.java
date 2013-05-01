@@ -3,12 +3,13 @@ package jbedit.classFileStructure.frames.verification_types;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class TypeInfoLoader
 {
-    public static AbstractTypeInfo[] loadElements(DataInputStream mainInput, int count) throws IOException
+    public static LinkedList<AbstractTypeInfo> loadElements(DataInputStream mainInput, int count) throws IOException
     {
-        AbstractTypeInfo[] result = new AbstractTypeInfo[count];
+        LinkedList<AbstractTypeInfo> result = new LinkedList<AbstractTypeInfo>();
         
         for (int i = 0; i < count; i++)
         {
@@ -18,7 +19,7 @@ public class TypeInfoLoader
 //            }
 //            else
             {
-                result[i] = loadElement(mainInput);
+                result.add(loadElement(mainInput));
             }
         }
         

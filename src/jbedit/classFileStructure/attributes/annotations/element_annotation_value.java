@@ -28,7 +28,7 @@ public class element_annotation_value extends element_value
     }
 
     @Override
-    public void selfLoad(DataInputStream mainInput) throws IOException
+    public void selfLoad(DataInputStream mainInput) throws IOException 
     {
         annotation_value = new Annotation();
         annotation_value.selfLoad(mainInput);

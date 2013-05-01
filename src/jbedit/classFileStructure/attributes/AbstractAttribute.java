@@ -4,6 +4,7 @@ package jbedit.classFileStructure.attributes;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.constantPool.CONSTANTPoolElement;
 import jbedit.classFileStructure.frames.FrameException;
 
@@ -44,7 +45,7 @@ public abstract class AbstractAttribute
         this.attribute_lenght = attribute_lenght;
     }
     
-    public abstract void selfLoad(DataInputStream mainInput, CONSTANTPoolElement pool[]) throws IOException, FrameException;
+    public abstract void selfLoad(DataInputStream mainInput, LinkedList<CONSTANTPoolElement> pool) throws IOException, FrameException;
     
     public abstract void selfSave(DataOutputStream mainOutput) throws IOException, FrameException;
 

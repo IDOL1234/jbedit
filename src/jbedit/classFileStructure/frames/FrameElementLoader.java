@@ -3,17 +3,18 @@ package jbedit.classFileStructure.frames;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class FrameElementLoader
 {
-    public static AbstractStackMapFrame[] loadElements(DataInputStream mainInput, int count)
+    public static LinkedList<AbstractStackMapFrame> loadElements(DataInputStream mainInput, int count)
             throws IOException, FrameException
     {
         
-        AbstractStackMapFrame result[] = new AbstractStackMapFrame[count];
+        LinkedList<AbstractStackMapFrame> result = new LinkedList<AbstractStackMapFrame>();
         for (int i=0; i < count; i++)
         {
-            result[i] = loadElement(mainInput);
+            result.add(loadElement(mainInput));
         }
         
         return result;

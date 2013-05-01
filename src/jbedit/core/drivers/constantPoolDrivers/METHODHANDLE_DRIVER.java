@@ -1,6 +1,7 @@
 
 package jbedit.core.drivers.constantPoolDrivers;
 
+import java.util.LinkedList;
 import jbedit.classFileStructure.constantPool.CONSTANTPoolElement;
 import jbedit.classFileStructure.constantPool.CONSTANT_InterfaceMethodref;
 import jbedit.classFileStructure.constantPool.CONSTANT_MethodHandle;
@@ -10,7 +11,7 @@ import jbedit.classFileStructure.constantPool.CONSTANT_fieldRef;
 public class METHODHANDLE_DRIVER
 {
     @Deprecated
-    public static String getClassName(CONSTANT_MethodHandle cnst, CONSTANTPoolElement pool[])
+    public static String getClassName(CONSTANT_MethodHandle cnst, LinkedList<CONSTANTPoolElement> pool)
     {
         CONSTANTPoolElement attr = CONSTANT_POOL_DRIVER.getRawValue(cnst.getRefrence_index(), pool);
         if (cnst.getRefrence_kind() < 5)

@@ -4,12 +4,13 @@ package jbedit.classFileStructure.attributes;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.attributes.annotations.Annotation;
 
 public class parameter_annotations_table
 {
     private int num_annotations; //(short)
-    private Annotation annotations[];
+    private LinkedList<Annotation> annotations;
 
     public int getNum_annotations()
     {
@@ -21,12 +22,12 @@ public class parameter_annotations_table
         this.num_annotations = num_annotations;
     }
 
-    public Annotation[] getAnnotations()
+    public LinkedList<Annotation> getAnnotations()
     {
         return annotations;
     }
 
-    public void setAnnotations(Annotation[] annotations)
+    public void setAnnotations(LinkedList<Annotation> annotations)
     {
         this.annotations = annotations;
     }
@@ -36,7 +37,7 @@ public class parameter_annotations_table
         int result = 2;
         for (int i = 0; i < num_annotations; i++)
         {
-            result += annotations[i].getRealLength();
+            result += annotations.get(i).getRealLength();
         }
         return result;
     }
@@ -44,11 +45,11 @@ public class parameter_annotations_table
     public void selfLoad(DataInputStream mainInput) throws IOException
     {
         num_annotations = mainInput.readUnsignedShort();
-        annotations = new Annotation[num_annotations];
+        annotations = new LinkedList<Annotation>();
         for (int i=0; i < num_annotations; i++)
         {
-            annotations[i] = new Annotation();
-            annotations[i].selfLoad(mainInput);
+            annotations.add(new Annotation());
+            annotations.get(i).selfLoad(mainInput);
         }
     }
     
@@ -57,7 +58,7 @@ public class parameter_annotations_table
         mainOutput.writeShort(num_annotations);
         for (int i = 0; i < num_annotations; i++)
         {
-            annotations[i].selfSave(mainOutput);
+            annotations.get(i).selfSave(mainOutput);
         }
         
         

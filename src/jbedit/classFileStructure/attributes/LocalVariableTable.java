@@ -4,13 +4,14 @@ package jbedit.classFileStructure.attributes;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import jbedit.classFileStructure.constantPool.CONSTANTPoolElement;
 import jbedit.classFileStructure.frames.FrameException;
 
 public class LocalVariableTable extends AbstractAttribute
 {
     private int local_variable_table_length; //(short)
-    private LocalVariableTableElement local_variable_table[];
+    private LinkedList<LocalVariableTableElement> local_variable_table;
 
     public int getLocal_variable_table_length()
     {
@@ -22,12 +23,12 @@ public class LocalVariableTable extends AbstractAttribute
         this.local_variable_table_length = local_variable_table_length;
     }
 
-    public LocalVariableTableElement[] getLocal_variable_table()
+    public LinkedList<LocalVariableTableElement> getLocal_variable_table()
     {
         return local_variable_table;
     }
 
-    public void setLocal_variable_table(LocalVariableTableElement[] local_variable_table)
+    public void setLocal_variable_table(LinkedList<LocalVariableTableElement> local_variable_table)
     {
         this.local_variable_table = local_variable_table;
     }
@@ -39,20 +40,20 @@ public class LocalVariableTable extends AbstractAttribute
         result += 2;
         for (int i = 0; i < local_variable_table_length; i++)
         {
-            result += local_variable_table[i].getRealLength();
+            result += local_variable_table.get(i).getRealLength();
         }
         return result;
     }
 
     @Override
-    public void selfLoad(DataInputStream mainInput, CONSTANTPoolElement pool[]) throws IOException, FrameException
+    public void selfLoad(DataInputStream mainInput, LinkedList<CONSTANTPoolElement> pool) throws IOException, FrameException
     {
         local_variable_table_length = mainInput.readUnsignedShort();
-        local_variable_table = new LocalVariableTableElement[local_variable_table_length];
+        local_variable_table = new LinkedList<LocalVariableTableElement>();
         for (int i = 0; i < local_variable_table_length; i++)
         {
-            local_variable_table[i] = new LocalVariableTableElement();
-            local_variable_table[i].selfLoad(mainInput, pool);
+            local_variable_table.add(new LocalVariableTableElement());
+            local_variable_table.get(i).selfLoad(mainInput, pool);
         }
     }
     
@@ -64,7 +65,7 @@ public class LocalVariableTable extends AbstractAttribute
         mainOutput.writeShort(local_variable_table_length);
         for (int i = 0; i < local_variable_table_length; i++)
         {
-            local_variable_table[i].selfSave(mainOutput);
+            local_variable_table.get(i).selfSave(mainOutput);
         }
     }
         
@@ -84,7 +85,7 @@ public class LocalVariableTable extends AbstractAttribute
             return result;
         }
         
-        public void selfLoad(DataInputStream mainInput, CONSTANTPoolElement pool[]) throws IOException
+        public void selfLoad(DataInputStream mainInput, LinkedList<CONSTANTPoolElement> pool) throws IOException
         {
             start_pc = mainInput.readUnsignedShort();
             length = mainInput.readUnsignedShort();
