@@ -13,14 +13,14 @@ public class Main
     
     public static void main(String[] args) throws ClassFileLoaderException, FrameException
     {
-        
+
         //System.setProperty("debug", "true");    
         
-        //ClassFile clazz = null;
+        ClassFile clazz = null;
         
-        //clazz = ClassFileLoader.Load("c:/abb.class");
+        clazz = ClassFileLoader.Load("c:/abb.class");
         
-        //ClassFileSaver.Save(clazz, "c:/TESTIFICATE.class", true);
+        ClassFileSaver.Save(clazz, "c:/TESTIFICATE.class", true);
         
         //System.out.println("done");
     }

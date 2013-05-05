@@ -15,9 +15,15 @@ public abstract class AbstractCommand
      */
     public abstract AbstractConstant[] getNegativeReaction(MainStack stack);
     
+    public abstract int getTag();
+    
     public boolean checkStack(MainStack stack)
     {
-        
-        return false;
+        AbstractConstant reaction[] = getNegativeReaction(stack);
+        if (reaction.length > stack.size())
+            return false;
+        return true;
     };
+    
+    public abstract void selfLoad();
 }
