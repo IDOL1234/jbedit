@@ -15,7 +15,7 @@ public class Main
     {
 
         //System.setProperty("debug", "true");    
-        
+         
         ClassFile clazz = null;
         
         clazz = ClassFileLoader.Load("c:/abb.class");
